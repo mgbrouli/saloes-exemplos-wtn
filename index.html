@@ -1,0 +1,796 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="salao">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conheça nosso espaço de beleza, serviços e agendamentos.">
+  <title>Seu Espaço | Salão e Barbearia</title>
+
+  <!-- Tailwind CSS Browser CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --font-display: "Georgia", serif;
+    }
+
+    :root {
+      --page: #fffaf7;
+      --surface: #ffffff;
+      --text: #382c30;
+      --muted: #76676d;
+      --primary: #b94e72;
+      --primary-hover: #963653;
+      --accent: #f4dce5;
+      --border: #eadde1;
+      --hero-overlay: rgba(46, 20, 32, .55);
+    }
+
+    html[data-theme="barbearia"] {
+      --page: #111315;
+      --surface: #1c2023;
+      --text: #f5f2eb;
+      --muted: #c0c2c2;
+      --primary: #c2a36c;
+      --primary-hover: #a78953;
+      --accent: #33302a;
+      --border: #3b3e3f;
+      --hero-overlay: rgba(8, 10, 11, .72);
+    }
+
+    body {
+      background: var(--page);
+      color: var(--text);
+      transition: background .25s, color .25s;
+    }
+
+    .surface {
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .accent {
+      background: var(--accent);
+    }
+
+    .hero {
+      background-image:
+        linear-gradient(var(--hero-overlay), var(--hero-overlay)),
+        var(--hero-image);
+      background-position: center;
+      background-size: cover;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      text-align: center;
+      vertical-align: middle;
+      border-radius: .65rem;
+      padding: .85rem 1.2rem;
+      font-weight: 700;
+      transition: background .2s, transform .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      line-height: 1;
+      font-size: 1.15rem;
+    }
+
+    .illustrative-note {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: .78rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .theme-switch {
+      position: relative;
+      width: 48px;
+      height: 27px;
+      border-radius: 999px;
+      background: var(--primary);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .theme-switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      height: 21px;
+      width: 21px;
+      border-radius: 50%;
+      background: white;
+      transition: transform .2s;
+    }
+
+    html[data-theme="barbearia"] .theme-switch::after {
+      transform: translateX(21px);
+    }
+
+    .section-padding {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+
+    .service-image {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 640px) {
+      .section-padding {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen">
+
+  <!-- CABEÇALHO FIXO -->
+  <header class="surface border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+
+      <a href="#inicio" class="flex items-center gap-3 min-w-0">
+        <div id="logo-mark"
+          class="primary w-11 h-11 rounded-xl flex items-center justify-center text-xl font-bold">
+          S
+        </div>
+
+        <div class="min-w-0">
+          <p id="brand-name" class="font-bold tracking-wide truncate">
+            Studio Bella
+          </p>
+          <p id="brand-subtitle" class="muted text-xs truncate">
+            Beleza e cuidado
+          </p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <a href="#inicio" class="hover:opacity-70">Início</a>
+        <a href="#servicos" class="hover:opacity-70">Serviços</a>
+        <a href="#sobre" class="hover:opacity-70">Sobre</a>
+        <a href="#contato" class="hover:opacity-70">Contato</a>
+      </nav>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div class="hidden sm:block text-right">
+          <p class="text-xs font-bold" id="switch-label">Tema</p>
+          <p class="muted text-xs" id="switch-value">Salão</p>
+        </div>
+
+        <button
+          type="button"
+          class="theme-switch"
+          id="theme-toggle"
+          role="switch"
+          aria-checked="false"
+          aria-label="Alternar entre salão de beleza e barbearia"
+          title="Alternar tema">
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- APRESENTAÇÃO -->
+    <section id="inicio"
+      class="hero min-h-[570px] sm:min-h-[650px] flex items-center"
+      style="--hero-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1800&q=85')">
+
+      <div class="max-w-7xl w-full mx-auto px-5 sm:px-8 py-20">
+        <div class="max-w-2xl text-white">
+
+          <p id="hero-eyebrow"
+            class="uppercase tracking-[.22em] text-sm font-bold mb-5">
+            Seu momento de cuidado
+          </p>
+
+          <h1 id="hero-title"
+            class="font-display text-5xl sm:text-6xl lg:text-7xl leading-tight mb-6">
+            Sua beleza merece esse momento.
+          </h1>
+
+          <p id="hero-description"
+            class="text-lg sm:text-xl text-white/90 leading-relaxed mb-9 max-w-xl">
+            Um espaço pensado para valorizar sua beleza, renovar sua autoestima
+            e proporcionar uma experiência especial.
+          </p>
+
+          <div class="flex flex-wrap gap-3">
+            <a href="#servicos" class="btn primary">
+              <span id="hero-button">Conheça nossos serviços</span>
+              <span class="btn-icon" aria-hidden="true">↘</span>
+            </a>
+
+            <a href="#contato"
+              class="btn border border-white/70 text-white hover:bg-white/10">
+              <span class="btn-icon" aria-hidden="true">⌖</span>
+              <span>Como chegar</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section id="servicos" class="section-padding">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+
+        <div class="max-w-2xl mx-auto text-center mb-12">
+          <p id="services-eyebrow"
+            class="uppercase tracking-[.2em] text-xs font-bold mb-3"
+            style="color:var(--primary)">
+            Nossos serviços
+          </p>
+
+          <h2 id="services-title"
+            class="font-display text-4xl sm:text-5xl mb-5">
+            Cuidado em cada detalhe
+          </h2>
+
+          <p id="services-description" class="muted leading-relaxed">
+            Conheça algumas das opções preparadas para você.
+          </p>
+        </div>
+
+        <div id="services-grid"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Os cartões são inseridos pelo JavaScript. -->
+        </div>
+
+        <p class="illustrative-note">
+          Fotos, serviços e informações meramente ilustrativos.
+          Substitua pelo conteúdo real do estabelecimento antes de publicar.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="section-padding accent">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+          <div class="overflow-hidden rounded-2xl shadow-xl">
+            <img id="about-image"
+              src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1100&q=85"
+              alt="Ambiente ilustrativo de um estabelecimento de beleza"
+              class="w-full h-[340px] sm:h-[460px] object-cover"
+              loading="lazy">
+          </div>
+
+          <div>
+            <p id="about-eyebrow"
+              class="uppercase tracking-[.2em] text-xs font-bold mb-4"
+              style="color:var(--primary)">
+              Nosso espaço
+            </p>
+
+            <h2 id="about-title"
+              class="font-display text-4xl sm:text-5xl leading-tight mb-6">
+              Um lugar feito para você.
+            </h2>
+
+            <p id="about-description"
+              class="muted leading-relaxed mb-5">
+              Acreditamos que cuidar da aparência também é cuidar de si.
+              Nosso objetivo é oferecer um atendimento acolhedor, atenção aos
+              detalhes e uma experiência agradável em cada visita.
+            </p>
+
+            <p id="about-description-2"
+              class="muted leading-relaxed mb-8">
+              Venha conhecer nosso espaço e descubra como podemos ajudar você
+              a se sentir ainda melhor.
+            </p>
+
+            <a href="#contato" class="btn primary">
+              <span>Fale conosco</span>
+              <span class="btn-icon" aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+        </div>
+
+        <p class="illustrative-note">
+          Imagens e textos demonstrativos. Personalize esta seção para cada cliente.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTATO, WHATSAPP E GOOGLE MAPS -->
+    <section id="contato" class="section-padding">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <p id="contact-eyebrow"
+            class="uppercase tracking-[.2em] text-xs font-bold mb-3"
+            style="color:var(--primary)">
+            Estamos esperando por você
+          </p>
+
+          <h2 id="contact-title"
+            class="font-display text-4xl sm:text-5xl mb-5">
+            Venha conhecer nosso espaço
+          </h2>
+
+          <p id="contact-description" class="muted leading-relaxed">
+            Consulte nossos horários, conheça nossa localização e agende seu
+            próximo atendimento.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+
+          <!-- INFORMAÇÕES -->
+          <div class="surface border rounded-2xl p-6 sm:p-9">
+
+            <h3 class="font-display text-3xl mb-8">
+              Como falar conosco
+            </h3>
+
+            <div class="space-y-7">
+
+              <div class="flex items-start gap-4">
+                <div class="accent rounded-xl w-12 h-12 flex items-center justify-center text-xl shrink-0">
+                  ⌖
+                </div>
+                <div>
+                  <h4 class="font-bold mb-1">Localização</h4>
+                  <p id="business-address" class="muted leading-relaxed">
+                    Rua Exemplo, 123 — Centro<br>
+                    Sua cidade — UF
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="accent rounded-xl w-12 h-12 flex items-center justify-center text-xl shrink-0">
+                  ◷
+                </div>
+                <div>
+                  <h4 class="font-bold mb-1">Funcionamento</h4>
+                  <p id="business-hours" class="muted leading-relaxed">
+                    Consulte nossos horários pelo WhatsApp.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="accent rounded-xl w-12 h-12 flex items-center justify-center text-xl shrink-0">
+                  ☏
+                </div>
+                <div>
+                  <h4 class="font-bold mb-1">Atendimento</h4>
+                  <p class="muted leading-relaxed">
+                    Tire suas dúvidas e consulte a disponibilidade de horários.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="mt-9">
+              <a
+                id="contact-cta"
+                href="https://wa.me/5511999999999"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn primary w-full sm:w-auto">
+                <span class="btn-icon" aria-hidden="true">☏</span>
+                <span id="contact-cta-text">Agendar pelo WhatsApp</span>
+                <span class="btn-icon" aria-hidden="true">↗</span>
+              </a>
+            </div>
+
+            <p class="illustrative-note text-left">
+              Endereço, horários e contato ilustrativos. Atualize os dados
+              antes de publicar para um cliente.
+            </p>
+
+          </div>
+
+          <!-- MAPA -->
+          <div>
+            <div class="surface border rounded-2xl overflow-hidden shadow-lg">
+              <iframe
+                id="location-map"
+                title="Mapa de localização do estabelecimento"
+                src="https://maps.google.com/maps?q=Sao%20Paulo%2C%20SP&z=15&output=embed"
+                width="100%"
+                height="420"
+                style="border:0;display:block"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen>
+              </iframe>
+            </div>
+
+            <p class="illustrative-note">
+              Mapa demonstrativo. Substitua pela localização real do salão
+              ou da barbearia.
+            </p>
+
+            <a id="map-link"
+              href="https://www.google.com/maps/search/?api=1&query=Sao%20Paulo%2C%20SP"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn surface border w-full mt-3">
+              <span class="btn-icon" aria-hidden="true">⌖</span>
+              <span>Ver no Google Maps</span>
+              <span class="btn-icon" aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="surface border-t">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-7
+                flex flex-col sm:flex-row items-center
+                justify-between gap-3 text-sm">
+
+      <p class="muted">
+        © <span id="current-year"></span>
+        <span id="footer-brand">Studio Bella</span>.
+        Todos os direitos reservados.
+      </p>
+
+      <a href="#inicio" class="font-semibold hover:opacity-70">
+        Voltar ao início ↑
+      </a>
+
+    </div>
+  </footer>
+
+  <script>
+    /*
+      CONFIGURAÇÃO DO DEMONSTRATIVO
+
+      Antes de publicar para um cliente, altere:
+      1. whatsapp
+      2. address
+      3. mapQuery
+      4. hours
+      5. textos, serviços e imagens
+    */
+
+    const themes = {
+      salao: {
+        brand: "Studio Bella",
+        subtitle: "Beleza e cuidado",
+        logo: "S",
+
+        heroEyebrow: "Seu momento de cuidado",
+        heroTitle: "Sua beleza merece esse momento.",
+        heroDescription:
+          "Um espaço pensado para valorizar sua beleza, renovar sua autoestima e proporcionar uma experiência especial.",
+        heroButton: "Conheça nossos serviços",
+
+        heroImage:
+          "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1800&q=85",
+
+        servicesEyebrow: "Nossos serviços",
+        servicesTitle: "Cuidado em cada detalhe",
+        servicesDescription:
+          "Conheça algumas das opções preparadas para você.",
+
+        services: [
+          {
+            title: "Corte e penteado",
+            description:
+              "Um visual que combina com seu estilo e sua personalidade.",
+            image:
+              "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=900&q=85",
+            alt: "Profissional realizando um corte de cabelo"
+          },
+          {
+            title: "Coloração",
+            description:
+              "Renove seu visual com cores e técnicas personalizadas.",
+            image:
+              "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=85",
+            alt: "Atendimento de beleza em salão"
+          },
+          {
+            title: "Cuidados especiais",
+            description:
+              "Momentos de cuidado para valorizar sua beleza.",
+            image:
+              "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=900&q=85",
+            alt: "Produtos e acessórios de beleza"
+          }
+        ],
+
+        aboutEyebrow: "Nosso espaço",
+        aboutTitle: "Um lugar feito para você.",
+        aboutDescription:
+          "Acreditamos que cuidar da aparência também é cuidar de si. Nosso objetivo é oferecer um atendimento acolhedor, atenção aos detalhes e uma experiência agradável em cada visita.",
+        aboutDescription2:
+          "Venha conhecer nosso espaço e descubra como podemos ajudar você a se sentir ainda melhor.",
+        aboutImage:
+          "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1100&q=85",
+        aboutImageAlt: "Ambiente ilustrativo de salão de beleza",
+
+        contactEyebrow: "Estamos esperando por você",
+        contactTitle: "Venha conhecer nosso espaço",
+        contactDescription:
+          "Consulte nossos horários, conheça nossa localização e agende seu próximo atendimento.",
+        cta: "Agendar pelo WhatsApp",
+
+        address: "Rua Exemplo, 123 — Centro, São Paulo - SP",
+        hours: "Consulte nossos horários pelo WhatsApp.",
+
+        // Troque pelo número real, com código do país e DDD.
+        whatsapp: "5511999999999",
+
+        // Localização de demonstração.
+        mapQuery: "São Paulo, SP"
+      },
+
+      barbearia: {
+        brand: "Barber Club",
+        subtitle: "Estilo e personalidade",
+        logo: "B",
+
+        heroEyebrow: "Seu estilo, suas regras",
+        heroTitle: "Seu visual começa aqui.",
+        heroDescription:
+          "Cortes marcantes, cuidado com a barba e um espaço pensado para quem valoriza estilo, personalidade e atendimento de qualidade.",
+        heroButton: "Conheça nossos serviços",
+
+        heroImage:
+          "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1800&q=85",
+
+        servicesEyebrow: "O que fazemos",
+        servicesTitle: "Estilo em cada detalhe",
+        servicesDescription:
+          "Do corte clássico ao visual moderno, encontre seu estilo.",
+
+        services: [
+          {
+            title: "Corte masculino",
+            description:
+              "Cortes clássicos e modernos, adaptados ao seu estilo.",
+            image:
+              "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=85",
+            alt: "Corte de cabelo masculino em barbearia"
+          },
+          {
+            title: "Barba e acabamento",
+            description:
+              "Atenção aos detalhes para um visual bem cuidado.",
+            image:
+              "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&q=85",
+            alt: "Atendimento de barba em barbearia"
+          },
+          {
+            title: "Visual completo",
+            description:
+              "Combine corte e barba para renovar sua aparência.",
+            image:
+              "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=900&q=85",
+            alt: "Interior de barbearia"
+          }
+        ],
+
+        aboutEyebrow: "Nossa barbearia",
+        aboutTitle: "Mais que um corte. Uma experiência.",
+        aboutDescription:
+          "Nossa proposta é unir técnica, personalidade e atenção aos detalhes para oferecer um atendimento que respeite o estilo de cada cliente.",
+        aboutDescription2:
+          "Seja para manter seu corte ou experimentar algo novo, estamos prontos para receber você.",
+        aboutImage:
+          "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1100&q=85",
+        aboutImageAlt: "Ambiente ilustrativo de barbearia",
+
+        contactEyebrow: "Esperamos por você",
+        contactTitle: "Seu próximo corte começa aqui",
+        contactDescription:
+          "Consulte os horários, veja nossa localização e agende seu atendimento.",
+        cta: "Agendar na barbearia",
+
+        address: "Rua Exemplo, 123 — Centro, São Paulo - SP",
+        hours: "Consulte nossos horários pelo WhatsApp.",
+
+        // Troque pelo número real, com código do país e DDD.
+        whatsapp: "5511999999999",
+
+        // Localização de demonstração.
+        mapQuery: "São Paulo, SP"
+      }
+    };
+
+    const themeToggle = document.getElementById("theme-toggle");
+
+    function setImageWithFallback(img, primaryUrl, fallbackUrl) {
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = fallbackUrl;
+      };
+
+      img.src = primaryUrl;
+    }
+
+    function applyTheme(themeName) {
+      const theme = themes[themeName];
+
+      if (!theme) return;
+
+      document.documentElement.dataset.theme = themeName;
+
+      themeToggle.setAttribute(
+        "aria-checked",
+        String(themeName === "barbearia")
+      );
+
+      document.getElementById("brand-name").textContent = theme.brand;
+      document.getElementById("brand-subtitle").textContent = theme.subtitle;
+      document.getElementById("logo-mark").textContent = theme.logo;
+      document.getElementById("footer-brand").textContent = theme.brand;
+
+      document.getElementById("switch-value").textContent =
+        themeName === "salao" ? "Salão" : "Barbearia";
+
+      document.getElementById("hero-eyebrow").textContent =
+        theme.heroEyebrow;
+      document.getElementById("hero-title").textContent =
+        theme.heroTitle;
+      document.getElementById("hero-description").textContent =
+        theme.heroDescription;
+      document.getElementById("hero-button").textContent =
+        theme.heroButton;
+
+      document.querySelector(".hero").style.setProperty(
+        "--hero-image",
+        `url("${theme.heroImage}")`
+      );
+
+      document.getElementById("services-eyebrow").textContent =
+        theme.servicesEyebrow;
+      document.getElementById("services-title").textContent =
+        theme.servicesTitle;
+      document.getElementById("services-description").textContent =
+        theme.servicesDescription;
+
+      const servicesGrid = document.getElementById("services-grid");
+      servicesGrid.replaceChildren();
+
+      theme.services.forEach((service) => {
+        const article = document.createElement("article");
+        article.className =
+          "surface border rounded-2xl overflow-hidden " +
+          "transition duration-200 hover:-translate-y-1 hover:shadow-xl";
+
+        const img = document.createElement("img");
+        img.className = "service-image";
+        img.alt = service.alt;
+        img.loading = "lazy";
+
+        setImageWithFallback(
+          img,
+          service.image,
+          "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=85"
+        );
+
+        const content = document.createElement("div");
+        content.className = "p-6";
+
+        const title = document.createElement("h3");
+        title.className = "font-display text-2xl mb-3";
+        title.textContent = service.title;
+
+        const description = document.createElement("p");
+        description.className = "muted leading-relaxed";
+        description.textContent = service.description;
+
+        content.append(title, description);
+        article.append(img, content);
+        servicesGrid.append(article);
+      });
+
+      document.getElementById("about-eyebrow").textContent =
+        theme.aboutEyebrow;
+      document.getElementById("about-title").textContent =
+        theme.aboutTitle;
+      document.getElementById("about-description").textContent =
+        theme.aboutDescription;
+      document.getElementById("about-description-2").textContent =
+        theme.aboutDescription2;
+
+      const aboutImage = document.getElementById("about-image");
+      aboutImage.alt = theme.aboutImageAlt;
+
+      setImageWithFallback(
+        aboutImage,
+        theme.aboutImage,
+        "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1100&q=85"
+      );
+
+      document.getElementById("contact-eyebrow").textContent =
+        theme.contactEyebrow;
+      document.getElementById("contact-title").textContent =
+        theme.contactTitle;
+      document.getElementById("contact-description").textContent =
+        theme.contactDescription;
+      document.getElementById("contact-cta-text").textContent =
+        theme.cta;
+
+      document.getElementById("business-address").textContent =
+        theme.address;
+      document.getElementById("business-hours").textContent =
+        theme.hours;
+
+      // WhatsApp: número internacional, sem +, espaços ou traços.
+      const whatsappMessage = encodeURIComponent(
+        `Olá! Gostaria de saber mais sobre os serviços de ${theme.brand}.`
+      );
+
+      document.getElementById("contact-cta").href =
+        `https://wa.me/${theme.whatsapp}?text=${whatsappMessage}`;
+
+      // Atualiza o mapa e o link externo conforme o tema.
+      const encodedMapQuery = encodeURIComponent(theme.mapQuery);
+
+      document.getElementById("location-map").src =
+        `https://maps.google.com/maps?q=${encodedMapQuery}&z=15&output=embed`;
+
+      document.getElementById("map-link").href =
+        `https://www.google.com/maps/search/?api=1&query=${encodedMapQuery}`;
+
+      document.title = `${theme.brand} | ${theme.subtitle}`;
+    }
+
+    themeToggle.addEventListener("click", () => {
+      const currentTheme = document.documentElement.dataset.theme;
+      applyTheme(currentTheme === "salao" ? "barbearia" : "salao");
+    });
+
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+
+    // Inicia no tema de salão de beleza.
+    applyTheme("salao");
+  </script>
+
+</body>
+</html>
